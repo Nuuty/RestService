@@ -1,33 +1,42 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
-using System.ServiceModel;
-using System.ServiceModel.Web;
-using System.Text;
 
 namespace WCFRestService
 {
-    // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "Service1" in code, svc and config file together.
-    // NOTE: In order to launch WCF Test Client for testing this service, please select Service1.svc or Service1.svc.cs at the Solution Explorer and start debugging.
     public class Service1 : IService1
     {
-        public string GetData(int value)
+        public static int Ids { get; set; }
+
+        private static IList<Dummy> dummies = new List<Dummy>
         {
-            return string.Format("You entered: {0}", value);
+            new Dummy()
+
+        };
+
+        public IList<Dummy> GetData()
+        {
+            return dummies;
         }
 
-        public CompositeType GetDataUsingDataContract(CompositeType composite)
+        public Dummy GetDataById(string id)
         {
-            if (composite == null)
-            {
-                throw new ArgumentNullException("composite");
-            }
-            if (composite.BoolValue)
-            {
-                composite.StringValue += "Suffix";
-            }
-            return composite;
+            return dummies.FirstOrDefault(x => x.Id.Equals(int.Parse(id)));
+        }
+
+        public void PostData(Dummy dummy)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string PutData(Dummy dummy, string id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string DeleteData(string id)
+        {
+            throw new NotImplementedException();
         }
     }
 }
