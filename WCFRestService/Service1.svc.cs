@@ -8,35 +8,43 @@ namespace WCFRestService
     {
         public static int Ids { get; set; }
 
-        private static IList<Dummy> dummies = new List<Dummy>
+        //WCF will create a new instance of Service1 for each new client connecting to your service
+        //That is why the List needs to be static otherwise it will not be able to keep data between instances
+        private static readonly IList<Dummy> Dummies = new List<Dummy>
         {
-            new Dummy()
+            new Dummy
+            {
+                Id = ++Ids,
+                Name = "First Dummy"
+            }
 
-        };
-
-        public IList<Dummy> GetData()
+        };    
+        public IList<Dummy> GetDummies()
         {
-            return dummies;
+            return Dummies;
         }
 
-        public Dummy GetDataById(string id)
+        public Dummy GetDummy(string id)
         {
-            return dummies.FirstOrDefault(x => x.Id.Equals(int.Parse(id)));
+            return Dummies.FirstOrDefault(dummy => dummy.Id.Equals(int.Parse(id)));
         }
 
-        public void PostData(Dummy dummy)
+        public void DeleteDummy(string id)
         {
-            throw new NotImplementedException();
+            Dummy dummy = GetDummy(id);
+            Dummies.Remove(dummy);
         }
 
-        public string PutData(Dummy dummy, string id)
+        public void PostDummy(Dummy dummy)
         {
-            throw new NotImplementedException();
+            dummy.Id = ++Ids;
+            Dummies.Add(dummy);
         }
 
-        public string DeleteData(string id)
+        public void PutDummy(Dummy dummy, string id)
         {
-            throw new NotImplementedException();
+            Dummy d = GetDummy(id);
+            d.Name = dummy.Name;
         }
     }
 }
