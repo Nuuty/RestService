@@ -1,9 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel;
 
 namespace WCFRestService
 {
+    //Eftersom InstanceContextMode.PerCall er default så er servicen stateless.
+    //En workaround er at lave listen static ellers er den optimale metode at ændre InstanceContextMode til Single.
+    //Dermed genbruges det samme server objekt til hvert kald istedet for at lave et nyt.
+    //Der laves kun et nyt service objekt hvis der ikke allerede eksisterer et i forvejen.
+    //[ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
     public class Service1 : IService1
     {
         public static int Ids { get; set; }
